@@ -1,0 +1,17 @@
+{
+  "name": "receptionist_bot",
+  "author": "The Barbarian Group",
+  "version": "1.0.0",
+  "description": "A customizable Alexa skill designed to supplement and definitely not replace a human receptionist.",
+  "scripts": {
+    "zip": "zip -r function.zip package.json *.js **/*.js node_modules"
+  },
+  "dependencies": {
+    "@slack/client": "^3.14.1",
+    "alexa-sdk": "^1.0.25",
+    "aws-sdk": "^2.191.0",
+    "lodash.get": "^4.4.2",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  }
+}

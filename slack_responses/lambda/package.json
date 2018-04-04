@@ -1,0 +1,16 @@
+{
+  "name": "reception_slack_repsonse",
+  "version": "1.0.0",
+  "author": "The Barbarian Group",
+  "description": "A lambda function to handle messages passed between instances of The Barbarian Group's 'receptionist-bot' and an associated Slack or other messaging API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.140.0",
+    "lodash.filter": "^4.6.0",
+    "qs": "^6.5.1"
+  }
+}
