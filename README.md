@@ -1,4 +1,4 @@
-# Alexa Slack ReceptionBot
+# Alexa + Slack ReceptionBot
 
 ### Table of Contents
 1. [Introduction](#introduction)
