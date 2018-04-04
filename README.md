@@ -7,7 +7,7 @@
     * [Create a Slack App](#create-a-slack-app)
     * [Set up the Backend App](#set-up-the-backend-app)  
 
-3. [Alexa Receptionist Skill](#alexa-receptionist-skill)
+3. [ReceptionBot Skill](#receptionbot-skill)
     * [Create an Alexa Developer Account](#create-an-alexa-developer-account)
     * [Create an Alexa Skill](#create-an-alexa-skill)
     * [Create a Lambda function](#create-a-lambda-function)
@@ -25,7 +25,7 @@
 6. [Resources](#resources)
 
 # Introduction
-Alexa Receptionist is the main repo for an Alexa based receptionist that connects to Slack. There are five different components to allow Alexa to connect to Slack for two way communication. This repo is the starting point and will outline the primary setup of Slack, the Alexa Skill and necessary AWS services. There are two other repos for the backend which connects the Alexa Skill to your Slack users and allows user management.
+reception-bot is the main repo for an Alexa-based reception that connects to Slack. There are five different components to allow Alexa to connect to Slack for two way communication. This repo is the starting point and will outline the primary setup of Slack, the Alexa Skill and necessary AWS services. There are two other repos for the backend which connects the Alexa Skill to your Slack users and allows user management.
 
 The basic use case we developed for is enabling a visitor to your company to contact an employee via Alexa and Slack. Once the visitor finds the employee they are meeting, Alexa will send the employee a message with the visitor's name and reason for visit. The employee will be able to respond with one of three pre-determined responses, which Alexa will then relay to the visitor. If the employee does not respond within 30 seconds Alexa will interrupt to see if the visitor would like to continue, restart, exit or needs help.
 
@@ -41,7 +41,7 @@ The basic use case we developed for is enabling a visitor to your company to con
 ## Set up the Backend App
 Clone or download <https://github.com/thebarbariangroup/reception-slackbot-be> and <https://github.com/thebarbariangroup/reception-slackbot-fe>. Further details on how to build and set up the apps are within the READMEs of the respective repos.
 
-# Alexa Receptionist Skill
+# ReceptionBot Skill
 
 ## Create an Alexa Developer Account
 Create an account at <https://developer.amazon.com/alexa>
@@ -58,6 +58,7 @@ Create an account at <https://developer.amazon.com/alexa>
 2. Paste in the contents of this repo's `baseInteractionModel.json`, *update the invocation name*, then click \"**Save Model**\", then
 \"**Build Model**\". This will add the base data needed to run the skill, including intents, utterances, slots, and slot values.
     * Replace our placeholder invocation name with one of your choosing or the Build will error & fail
+    * We call ours [\"Barb\"](https://static0.srcdn.com/wp-content/uploads/2016/08/Stranger-Things-Barb.jpg)
 3. Click \"**Interfaces**\" in the left panel below the \"Interaction Model\" tab, then toggle on the \"Display Interface\"
 4. Customize the model for your purposes
     * Add to the \"EmployeeFirstNames\" slot values array
