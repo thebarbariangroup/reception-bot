@@ -129,7 +129,7 @@ function handleIntentConfirmed(intentObj) {
 
 function confirmIntentWithCard(intentObj) {
   const { visitorFirst, employeeFirst, visitType } = intentObj.slots;
-  const outputSpeech = `So, your name is ${ visitorFirst.value.toProperCase() } and you\'re here to see ${ employeeFirst.value } for a ${ visitType.value }?`;
+  const outputSpeech = `So, your name is ${ visitorFirst.value.toProperCase() } and you\'re here to see ${ resolvedEmployeeValue || employeeFirst.value.toProperCase() } for a ${ visitType.value }?`;
   const reprompt = `Is this correct?`;
   const cardTitle = `Please confirm the contact summary:`;
   const cardContent = `${ outputSpeech } ${ reprompt }`;
@@ -139,7 +139,7 @@ function confirmIntentWithCard(intentObj) {
 function setGlobalAttributes(resolvedEmployee, resolvedVisitType, intentObj) {
     const visitorFirst = intentObj.slots.visitorFirst.value;
     const employeeFirst = resolvedEmployee || intentObj.slots.employeeFirst.value;
-    const visitType = resolvedVisitType || intentObj.slots.visitType.value;
+    const visitType = intentObj.slots.visitType.value;
     this.attributes['visitor'] = {
         firstName: visitorFirst,
         displayName: Utils.displayName(visitorFirst)

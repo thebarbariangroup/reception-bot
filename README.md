@@ -39,7 +39,7 @@ The basic use case we developed for is enabling a visitor to your company to con
 5. In **OAuth & Permissions** menu you should now see tokens for **OAuth Access Token** and **Bot User OAuth Access Token**. You will need these later.
 
 ## Set up the Backend App
-Clone or download <https://github.com/thebarbariangroup/reception-slackbot-be> and <https://github.com/thebarbariangroup/reception-slackbot-fe>. Further details on how to build and set up the apps are within the READMEs of the respective repos.
+Clone or download <https://github.com/thebarbariangroup/receptionbot-slackbot-be> and <https://github.com/thebarbariangroup/receptionbot-slackbot-fe>. Further details on how to build and set up the apps are within the READMEs of the respective repos.
 
 # ReceptionBot Skill
 
@@ -58,7 +58,7 @@ Create an account at <https://developer.amazon.com/alexa>
 2. Paste in the contents of this repo's `baseInteractionModel.json`, *update the invocation name*, then click \"**Save Model**\", then
 \"**Build Model**\". This will add the base data needed to run the skill, including intents, utterances, slots, and slot values.
     * Replace our placeholder invocation name with one of your choosing or the Build will error & fail
-    * We call ours [\"Barb\"](https://static0.srcdn.com/wp-content/uploads/2016/08/Stranger-Things-Barb.jpg)
+    * We call ours [\"Barb\"](https://static0.srcdn.com/wp-content/uploads/2016/08/Stranger-Things-Barb.jpg) - RIP \(???\).
 3. Click \"**Interfaces**\" in the left panel below the \"Interaction Model\" tab, then toggle on the \"Display Interface\"
 4. Customize the model for your purposes
     * Add to the \"EmployeeFirstNames\" slot values array
@@ -96,7 +96,7 @@ Create an account at <https://developer.amazon.com/alexa>
     * `SLACK_BOT_TOKEN` - paste in the Bot User OAuth Access Token from your Slack app.
     * `USER_API_TOKEN` - paste in the code generated in the backend application you set up earlier.
     * `APP_ID` - paste in the Alexa Skill ID.
-    * `SERVER_URL` - the URL where you are hosting the `reception-slackbot-be`
+    * `SERVER_URL` - the URL where you are hosting the `receptionbot-slackbot-be`
     * `FALLBACK_ID` - paste in the Slack ID for whichever user or channel you would like to set up as a \"fallback\", when the desired employee is unavailable.
     * `COMPANY_NAME` - your company name
 8. Under **Basic Settings** change the timeout to 1 minute.

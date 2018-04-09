@@ -3,4 +3,4 @@ cd lambda
 npm install
 zip -r ../lambda.zip *
 cd ..
-aws lambda update-function-code --function-name AlexaReceptionist --zip-file fileb://lambda.zip --profile barbarian
+aws lambda update-function-code --function-name [yourLambdaFunctionName] --zip-file fileb://lambda.zip --profile [yourProfileName]
