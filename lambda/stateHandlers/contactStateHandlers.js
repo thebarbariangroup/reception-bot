@@ -3,7 +3,7 @@ const constants = require('../constants/constants');
 const docClient = require('../constants/constants').docClient;
 const Utils = require('../utilities/utils');
 const SlackBot = require('../helpers/slackAPI');
-const ContactReception = require('../helpers/ContactReception');
+const ContactFallback = require('../helpers/ContactFallback');
 
 const ContactEmployee = require('../intentHandlers/ContactEmployee');
 
@@ -21,7 +21,7 @@ const contactStateHandlers = Alexa.CreateStateHandler(constants.states.CONTACT, 
   // DEFAULTS
   'SessionEndedRequest': function () {
       (!this.attributes['ReceptionContacted'])
-        ? ContactReception.call(this)
+        ? ContactFallback.call(this)
         : this.emitWithState('AMAZON.CancelIntent');
   },
   'AMAZON.StopIntent' : StopIntent,

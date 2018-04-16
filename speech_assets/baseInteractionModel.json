@@ -113,11 +113,65 @@
                     ]
                 },
                 {
+                    "name": "DeliveryIntent",
+                    "slots": [
+                        {
+                            "name": "employeeFirst",
+                            "type": "EmployeeFirstNames"
+                        },
+                        {
+                            "name": "employeeLast",
+                            "type": "EmployeeLastNames"
+                        },
+                        {
+                            "name": "deliveryType",
+                            "type": "DeliveryType"
+                        }
+                    ],
+                    "samples": [
+                        "I have a {deliveryType} for {employeeFirst}",
+                        "I have a {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I have a {deliveryType}",
+                        "I got a {deliveryType} for {employeeFirst}",
+                        "I got a {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I got a {deliveryType}",
+                        "I have a {deliveryType} here for {employeeFirst}",
+                        "I have a {deliveryType} here for {employeeFirst} {employeeLast}",
+                        "I have a {deliveryType} here",
+                        "I got a {deliveryType} here for {employeeFirst}",
+                        "I got a {deliveryType} here for {employeeFirst} {employeeLast}",
+                        "I got a {deliveryType} here",
+                        "{deliveryType} for {employeeFirst}",
+                        "{deliveryType} for {employeeFirst} {employeeLast}",
+                        "{deliveryType}",
+                        "I have {deliveryType} for {employeeFirst}",
+                        "I have {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I have {deliveryType}",
+                        "I have {deliveryType} here for {employeeFirst}",
+                        "I have {deliveryType} here for {employeeFirst} {employeeLast}",
+                        "I have {deliveryType} here",
+                        "I am here for a {deliveryType} for {employeeFirst}",
+                        "I am here for a {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I am here for a {deliveryType}",
+                        "I'm here for a {deliveryType} for {employeeFirst}",
+                        "I'm here for a {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I'm here for a {deliveryType}",
+                        "I've got a {deliveryType} for {employeeFirst}",
+                        "I've got a {deliveryType} for {employeeFirst} {employeeLast}",
+                        "I've got a {deliveryType}",
+                        "I've got a {deliveryType} here for {employeeFirst}",
+                        "I've got a {deliveryType} here for {employeeFirst} {employeeLast}",
+                        "I've got a {deliveryType} here",
+                        "{deliveryType} for {employeeFirst}",
+                        "{deliveryType} for {employeeFirst} {employeeLast}"
+                    ]
+                },
+                {
                     "name": "VisitIntent",
                     "slots": [
                         {
                             "name": "visitType",
-                            "type": "visitType"
+                            "type": "VisitType"
                         },
                         {
                             "name": "employeeFirst",
@@ -1177,7 +1231,7 @@
                     ]
                 },
                 {
-                    "name": "visitType",
+                    "name": "VisitType",
                     "values": [
                         {
                             "name": {
@@ -1239,6 +1293,35 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "DeliveryType",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "delivery",
+                                "synonyms": [
+                                    "package",
+                                    "mail",
+                                    "gift"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "food delivery",
+                                "synonyms": [
+                                    "food",
+                                    "food order",
+                                    "seamless",
+                                    "maple",
+                                    "grubhub",
+                                    "lunch delivery",
+                                    "lunch order"
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -1251,7 +1334,7 @@
                     "slots": [
                         {
                             "name": "visitType",
-                            "type": "visitType",
+                            "type": "VisitType",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
@@ -1289,6 +1372,38 @@
                             "confirmationRequired": false,
                             "elicitationRequired": false,
                             "prompts": {}
+                        }
+                    ]
+                },
+                {
+                    "name": "DeliveryIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "deliveryType",
+                            "type": "DeliveryType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "employeeFirst",
+                            "type": "EmployeeFirstNames",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Intent-DeliveryIntent.IntentSlot-employeeFirst"
+                            }
+                        },
+                        {
+                            "name": "employeeLast",
+                            "type": "EmployeeLastNames",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Intent-DeliveryIntent.IntentSlot-employeeLast"
+                            }
                         }
                     ]
                 }
@@ -1367,6 +1482,44 @@
                     {
                         "type": "PlainText",
                         "value": "What is your name?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Intent-DeliveryIntent.IntentSlot-employeeFirst",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is his or her first name?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Please tell me his or her first name."
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Who is this for?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What is their first name?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Intent-DeliveryIntent.IntentSlot-employeeLast",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is his or her last name?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Please tell me his or her last name."
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What is their last name?"
                     }
                 ]
             }

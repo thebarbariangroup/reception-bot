@@ -8,12 +8,9 @@ const FindEmployee = require('../helpers/FindEmployee');
 const makePlainText = Alexa.utils.TextUtils.makePlainText;
 const makeImage = Alexa.utils.ImageUtils.makeImage;
 
-let resolvedEmployeeValue;
-let resolvedVisitTypeValue;
-let resolvedVisitorValue;
-
 function VisitIntent() {
   const intentObj = this.event.request.intent;
+
   const { visitorFirst, employeeFirst, visitType } = intentObj.slots;
 
   // IF the VisitIntent confirmationStatus is not "CONFIRMED"
@@ -68,23 +65,27 @@ function VisitIntent() {
           //  - employeeFirst name is neither "CONFIRMED" nor "DENIED"
           if (intentObj.slots.employeeFirst.confirmationStatus !== 'DENIED') {
               // THEN Confirm employeeFirst slot value
-              resolvedEmployeeValue = Utils.checkSlotSynonyms(employeeFirst);
+              const updatedIntent = intentObj;
+              const resolvedEmployeeFirst = Utils.checkSlotSynonyms(employeeFirst);
               const slotToConfirm = 'employeeFirst';
-              const outputSpeech = `Are you here to see ${ resolvedEmployeeValue }?`;
+              const outputSpeech = `Are you here to see ${ resolvedEmployeeFirst }?`;
               const reprompt = outputSpeech;
               const cardTitle = `Please confirm...`;
               const cardContent = outputSpeech;
-              this.emit(':confirmSlotWithCard', slotToConfirm, outputSpeech, reprompt, cardTitle, cardContent);
+              updatedIntent.slots[slotToConfirm].value = resolvedEmployeeFirst;
+              this.emit(':confirmSlotWithCard', slotToConfirm, outputSpeech, reprompt, cardTitle, cardContent, updatedIntent);
           }
           // employeeFirst name IS "DENIED"
           else {
               // User denies the confirmation of slot value
+              const updatedIntent = intentObj;
               const slotToElicit = 'employeeFirst';
               const outputSpeech = `Who are you here to see?`;
               const reprompt = outputSpeech;
               const cardTitle = `My apologies`;
               const cardContent = outputSpeech;
-              this.emit(':elicitSlotWithCard', slotToElicit, outputSpeech, reprompt, cardTitle, cardContent);
+              updatedIntent.slots[slotToElicit].value = "";
+              this.emit(':elicitSlotWithCard', slotToElicit, outputSpeech, reprompt, cardTitle, cardContent, updatedIntent);
           }
       }
       // IF the visitType is NOT 'CONFIRMED'
@@ -95,7 +96,7 @@ function VisitIntent() {
               // THEN Confirm visitType slot value
               // resolvedVisitTypeValue = Utils.checkSlotSynonyms(intentObj.slots.visitType);
               const slotToConfirm = 'visitType';
-              const outputSpeech = `The reason for your visit is: ${ intentObj.slots.visitType.value }?`;
+              const outputSpeech = `The reason for your visit is: ${ visitType.value }?`;
               const reprompt = outputSpeech;
               const cardTitle = `Please confirm...`;
               const cardContent = outputSpeech;
@@ -123,36 +124,52 @@ function VisitIntent() {
 }
 
 function handleIntentConfirmed(intentObj) {
-  setGlobalAttributes.call(this, resolvedEmployeeValue, resolvedVisitTypeValue, intentObj);
+  const formatted = _formatForAttributes(intentObj);
+  this.attributes = Utils.mergeDeep(this.attributes, formatted);
   FindEmployee.call(this);
 }
 
 function confirmIntentWithCard(intentObj) {
-  const { visitorFirst, employeeFirst, visitType } = intentObj.slots;
-  const outputSpeech = `So, your name is ${ visitorFirst.value.toProperCase() } and you\'re here to see ${ resolvedEmployeeValue || employeeFirst.value.toProperCase() } for a ${ visitType.value }?`;
+  const updatedIntent = intentObj;
+  const { employeeFirst, employeeLast, visitorFirst, visitorLast, visitType } = intentObj.slots;
+  const resolvedEmployeeFirst = Utils.checkSlotSynonyms(employeeFirst);
+  const resolvedEmployeeLast = Utils.checkSlotSynonyms(employeeLast);
+  
+  const outputSpeech = `So, your name is ${ visitorFirst.value.toProperCase() } and you\'re here to see ${ resolvedEmployeeFirst } for a ${ visitType.value }?`;
   const reprompt = `Is this correct?`;
   const cardTitle = `Please confirm the contact summary:`;
   const cardContent = `${ outputSpeech } ${ reprompt }`;
-  this.emit(':confirmIntentWithCard', outputSpeech, reprompt, cardTitle, cardContent, intentObj);
+  updatedIntent.slots.employeeFirst.value = resolvedEmployeeFirst;
+  updatedIntent.slots.employeeLast.value = resolvedEmployeeLast;
+  
+  this.emit(':confirmIntentWithCard', outputSpeech, reprompt, cardTitle, cardContent, updatedIntent);
 }
 
-function setGlobalAttributes(resolvedEmployee, resolvedVisitType, intentObj) {
-    const visitorFirst = intentObj.slots.visitorFirst.value;
-    const employeeFirst = resolvedEmployee || intentObj.slots.employeeFirst.value;
-    const visitType = intentObj.slots.visitType.value;
-    this.attributes['visitor'] = {
-        firstName: visitorFirst,
-        displayName: Utils.displayName(visitorFirst)
+function _formatForAttributes({ intentName, confirmationStatus, slots }) {
+    const _confirmed = confirmationStatus;
+    
+    const eFirst = _confirmed || slots.employeeFirst.confirmationStatus === "CONFIRMED" ? slots.employeeFirst.value : "";
+    const eLast = _confirmed || slots.employeeLast.confirmationStatus === "CONFIRMED" ? slots.employeeLast.value : "";
+    const eDisplay = Utils.displayName(eFirst, eLast);
+    
+    const vFirst = _confirmed || slots.visitorFirst.confirmationStatus === "CONFIRMED" ? slots.visitorFirst.value : "";
+    const vLast = _confirmed || slots.visitorLast.confirmationStatus === "CONFIRMED" ? slots.visitorLast.value : "";
+    const vDisplay = Utils.displayName(vFirst, vLast);
+    
+    const employee = { firstName: eFirst, lastName: eLast, displayName: eDisplay };
+    const visitor = { firstName: vFirst, lastName: vLast, displayName: vDisplay };
+    const visitType = _confirmed || slots.visitType.confirmationStatus === "CONFIRMED" ? slots.visitType.value : "Unknown";
+    
+    return {
+      employee,
+      visitor,
+      visitType
     }
-    this.attributes['employee'] = {
-        firstName: employeeFirst,
-        displayName: Utils.displayName(employeeFirst)
-    }
-    this.attributes['visitType'] = visitType;
 }
 
 function carryOverPreviouslySetSlots(intentObj) {
   const { visitor, visitType } = this.attributes;
+  console.log("CARRYOVER", visitor, visitType);
   if( !!visitor.firstName ) {
     // Set visitorFirst slot value to value previously set in this session, and confirmation status to "CONFIRMED"
     intentObj.slots.visitorFirst.value = visitor.firstName;

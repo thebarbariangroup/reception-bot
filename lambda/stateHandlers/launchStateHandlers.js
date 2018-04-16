@@ -3,7 +3,7 @@ const Utils = require('../utilities/utils');
 const constants = require('../constants/constants');
 
 const Goodbye = require('../intentHandlers/Goodbye');
-const ContactReception = require('../helpers/ContactReception');
+const ContactFallback = require('../helpers/ContactFallback');
 
 const textTemplate = new Alexa.templateBuilders.BodyTemplate1Builder();
 const singleImageTemplate = new Alexa.templateBuilders.BodyTemplate2Builder();
@@ -35,9 +35,14 @@ const LaunchStateHandlers = {
         this.handler.state = constants.states.ONBOARDING;
         this.emitWithState("VisitIntent");
     },
+    "DeliveryIntent": function() {
+        Utils.setStaticSessionAttributes.call(this);
+        this.handler.state = constants.states.ONBOARDING;
+        this.emitWithState("DeliveryIntent");
+    },
     // DEFAULTS
     'SessionEndedRequest': function () {
-        ContactReception.call(this);
+        ContactFallback.call(this);
     },
     'AMAZON.StopIntent' : function () {
         if(!this.attributes.hasOwnProperty('DisplayPresent')) {

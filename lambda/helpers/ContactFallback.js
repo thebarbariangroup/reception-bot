@@ -4,7 +4,7 @@ const constants = require('../constants/constants');
 const Goodbye = require('../intentHandlers/Goodbye');
 
 
-function ContactReception(callbackIntent = 'Unhandled') {
+function ContactFallback(callbackIntent = 'Unhandled') {
   const visitor = (this.attributes["visitor"]) ? Utils.displayName(this.attributes["visitor"].firstName) : "Someone";
   SlackBot.PostMessage(constants.CONTACT_FALLBACK.id, {
     text: `${ visitor } is waiting in reception.`,
@@ -22,4 +22,4 @@ function ContactReception(callbackIntent = 'Unhandled') {
 }
 
 
-module.exports = ContactReception;
+module.exports = ContactFallback;

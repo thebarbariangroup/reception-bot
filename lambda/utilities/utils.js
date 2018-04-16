@@ -148,7 +148,7 @@ const checkSlotSynonyms = (slot) => {
 function setStaticSessionAttributes() {
   this.attributes['RestartCount'] = 0;
   this.attributes['ReceptionContacted'] = false;
-  this.attributes.reception = constants.CONTACT_FALLBACK;
+  this.attributes['reception'] = constants.CONTACT_FALLBACK;
   this.attributes['DisplayPresent'] = this.event.context.System.device.supportedInterfaces.Display;
 }
 
@@ -160,6 +160,27 @@ const delayPromise = (time, v) => {
 
 const createProgressiveResponse = (reqId, text) => new Alexa.directives.VoicePlayerSpeakDirective(reqId, text);
 
+const mergeDeep = (target, ...sources) => {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (__isObject(target) && __isObject(source)) {
+    for (const key in source) {
+      if (__isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return mergeDeep(target, ...sources);
+
+  function __isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+  }
+}
 
 module.exports = {
   saveSessionToDB,
@@ -172,5 +193,6 @@ module.exports = {
   setStaticSessionAttributes,
   checkSlotSynonyms,
   delayPromise,
-  createProgressiveResponse
+  createProgressiveResponse,
+  mergeDeep
 };

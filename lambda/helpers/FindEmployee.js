@@ -17,7 +17,7 @@ function FindEmployee() {
   const blackBg   = 'http://www.solidbackgrounds.com/images/2560x1440/2560x1440-black-solid-color-background.jpg'
   const employee  = this.attributes['employee'];
   const visitor   = this.attributes['visitor'];
-  const receptionists = this.attributes['receptionists'];
+  const fallback  = this.attributes['fallback'];
 
   // Initialize scoped vars
   let outputSpeech;
@@ -97,9 +97,6 @@ function FindEmployee() {
           reprompt      = 'You can say "Start Over".'
           template      = textTemplate.setTitle('Try someone else?')
                           .setTextContent(makePlainText(`${ outputText }`));
-
-          //contact receptionist
-          //utils.contactReceptionist.call(this, visitor, receptionists);
         }
 
       } // ENDif Found

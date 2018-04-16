@@ -79,7 +79,7 @@ module.exports = {
                             "name": "greet",
                             "text": "Greet",
                             "type": "button",
-                            "value": "reception"
+                            "value": "fallback"
                         }
                     ]
                 }])
