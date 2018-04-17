@@ -4,13 +4,14 @@ const constants = require('../constants/constants');
 const SlackBot = require('../helpers/slackAPI');
 
 const VisitIntent = require('../intentHandlers/Visit');
+const DeliveryIntent = require('../intentHandlers/Delivery');
 const ElementSelected = require('../intentHandlers/onboarding/elementSelected');
 const Restart = require('../intentHandlers/Restart');
 const StopIntent = require('../intentHandlers/onboarding/Stop');
 const HelpIntent = require('../intentHandlers/onboarding/Help');
 const Goodbye = require('../intentHandlers/Goodbye');
 
-const ContactReception = require('../helpers/ContactReception');
+const ContactFallback = require('../helpers/ContactFallback');
 const FindEmployee = require('../helpers/FindEmployee');
 
 
@@ -24,12 +25,13 @@ let resolvedVisitTypeValue = null;
 
 const employeeStateHandlers = Alexa.CreateStateHandler(constants.states.ONBOARDING, {
     'VisitIntent': VisitIntent,
+    'DeliveryIntent': DeliveryIntent,
     'ElementSelected': ElementSelected,
     'Restart': Restart,
     // DEFAULTS
     'SessionEndedRequest': function () {
       (!this.attributes['ReceptionContacted'])
-        ? ContactReception.call(this)
+        ? ContactFallback.call(this)
         : this.emitWithState('AMAZON.CancelIntent');
     },
     'AMAZON.StopIntent' : StopIntent,
